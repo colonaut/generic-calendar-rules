@@ -1,11 +1,11 @@
 {
-  "name": "medienkultur-generic-calendar",
+  "name": "generic-calendar",
   "version": "0.0.0",
   "description": "som",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/colonaut/medienkultur-generic-calendar.git"
+    "url": "git+https://github.com/colonaut/generic-calendar.git"
   },
   "license": "ISC",
   "dependencies": {
@@ -40,7 +40,7 @@
   },
   "author": "colonaut",
   "bugs": {
-    "url": "https://github.com/colonaut/medienkultur-generic-calendar/issues"
+    "url": "https://github.com/colonaut/generic-calendar/issues"
   },
-  "homepage": "https://github.com/colonaut/medienkultur-generic-calendar"
+  "homepage": "https://github.com/colonaut/generic-calendar"
 }
