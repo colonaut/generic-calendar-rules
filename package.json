@@ -1,0 +1,46 @@
+{
+  "name": "medienkultur-generic-calendar",
+  "version": "0.0.0",
+  "description": "som",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colonaut/medienkultur-generic-calendar.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^2.7.0",
+    "browserify": "^11.0.0",
+    "hapi": "^8.4.0",
+    "hapi-swagger": "^0.6.2",
+    "material-ui": "^0.11.1",
+    "react": "^0.13.3",
+    "react-tap-event-plugin": "^0.1.7"
+  },
+  "devDependencies": {
+    "babel": "^5.8.19",
+    "babel-core": "^5.8.19",
+    "babel-loader": "^5.3.2",
+    "babel-plugin-object-assign": "^1.2.1",
+    "babel-runtime": "^5.8.20",
+    "babelify": "^6.1.3",
+    "gulp": "^3.9.0",
+    "gulp-typescript": "2.7.8",
+    "ntypescript": "1.201507131806.1",
+    "vinyl-source-stream": "^1.1.0",
+    "webpack": "^1.12.0",
+    "webpack-dev-server": "^1.10.1"
+  },
+  "publishConfig": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+  },
+  "author": "colonaut",
+  "bugs": {
+    "url": "https://github.com/colonaut/medienkultur-generic-calendar/issues"
+  },
+  "homepage": "https://github.com/colonaut/medienkultur-generic-calendar"
+}
