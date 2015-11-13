@@ -2,19 +2,12 @@
  * Created by kalle on 15.09.2015.
  */
 'use strict';
-import React from 'react/addons'
-
-class CountUp{
-
-}
-
-class CountDown{
-
-}
+import React from 'react/addons';
+import TextField from 'material-ui/lib/text-field';
 
 
-
-export class Number extends React.Component{
+//Numbers shouls also be able to transfer decimals and so.
+export class NumberField extends React.Component{
     constructor(props){
         super(props);
 
@@ -26,14 +19,9 @@ export class Number extends React.Component{
 
 
     render(){
-        var unit_markup = this.props.unit
-            ? <span>{this.props.unit}</span>
-            : null;
-
-        return(<span>
-            <label />
-            <input type="number" /> {unit_markup}
-        </span>);
+        return(
+            <TextField hintText={this.props.hintText} defaultValue={this.props.defaultValue}/>
+        );
     }
 }
 

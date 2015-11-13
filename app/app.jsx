@@ -1,7 +1,7 @@
 import React from 'react/addons';
 import { Bar } from './components/Bar.jsx';
 import { Carousel, CarouselSlide } from './components/Carousel.jsx';
-import { NumberDependency, Number } from './components/DependentNumbers.jsx';
+import { NumberDependency, NumberField } from './components/DependentNumbers.jsx';
 import RaisedButton from 'material-ui/lib/raised-button';
 import { Card, CardHeader, Avatar, CardActions, CardMedia, CardTitle, FlatButton, CardText } from 'material-ui/lib/card';
 
@@ -41,27 +41,46 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange braucht eine Rotation Deines Planeten?" />
                     <CardActions>
                         <NumberDependency>
-                            <Number unit="Stunden"/>
-                            <Number/>
+                            <NumberField hintText="Stunden"/>
+                            <NumberField/>
                         </NumberDependency>
+
                     </CardActions>
 
-                <div>
-                    <label for="planet_diameter">Wie groß ist sein Radius?</label>
-                    <input type="text" id="planet_diameter" value="6370" /> km
-                    <p className="earth-default">Erdradius: 6370 km</p>
-                </div>
 
-                <div>
-                    <label>Wie lange dauert eine Umdrehung Deines Planeten?</label>
-                    <input type="text" id="planet_rotation_h" value="23" /> h
-                    <input type="text" id="planet_rotation_m" value="56" /> m
-                    <input type="text" id="planet_rotation_s" value="4" /> s
-                    <input type="text" id="planet_rotation_ms" value="100" /> ms
-                    <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
-                    <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
-                </div>
+                    <CardTitle subtitle="Wie lange dauert eine Umdrehung Deines Planeten?"/>
+                    <CardActions>
+                        <NumberDependency>
+                            <NumberField id="planet_rotation_h" defaultValue="23" hintText="Stunden" />
+                            <NumberField id="planet_rotation_m" defaultValue="56" hintText="Minuten" />
+                            <NumberField id="planet_rotation_s" defaultValue="4" hintText="Sekunden" />
+                            <NumberField id="planet_rotation_ms" defaultValue="100" hintText="Millisekunden"
+                                    transferLimit="1000" transferValue="1" transferId="planet_rotation_s" />
+                            <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
+                            <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
+                        </NumberDependency>
 
+
+
+                    </CardActions>
+
+
+                    <div>
+                        <input type="text" id="planet_rotation_h" value="23" /> h
+                        <input type="text" id="planet_rotation_m" value="56" /> m
+                        <input type="text" id="planet_rotation_s" value="4" /> s
+                        <input type="text" id="planet_rotation_ms" value="100" /> ms
+                        <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
+                        <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
+
+                    </div>
+
+
+                    <div>
+                        <label for="planet_diameter">Wie groß ist sein Radius?</label>
+                        <input type="text" id="planet_diameter" value="6370" /> km
+                        <p className="earth-default">Erdradius: 6370 km</p>
+                    </div>
 
 
                 </Card>
