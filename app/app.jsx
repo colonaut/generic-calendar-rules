@@ -4,7 +4,7 @@ import { Carousel, CarouselSlide } from './components/Carousel.jsx';
 import { NumberDependency, NumberField } from './components/DependentNumbers.jsx';
 import RaisedButton from 'material-ui/lib/raised-button';
 import { Card, CardHeader, Avatar, CardActions, CardMedia, CardTitle, FlatButton, CardText } from 'material-ui/lib/card';
-
+import TextField from 'material-ui/lib/text-field';
 
 import mui from 'material-ui';
 let ThemeManager = new mui.Styles.ThemeManager();
@@ -41,8 +41,11 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange braucht eine Rotation Deines Planeten?" />
                     <CardActions>
                         <NumberDependency>
-                            <NumberField hintText="Stunden"/>
-                            <NumberField/>
+                            <TextField ref="lev1-0" hintText="level 1 0"/>
+                            <NumberDependency>
+                                <TextField ref="lev2-0" hintText="level 2 1"/>
+                            </NumberDependency>
+                            <TextField ref="lev1-1" hintText="level 1 1"/>
                         </NumberDependency>
 
                     </CardActions>
@@ -51,11 +54,13 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange dauert eine Umdrehung Deines Planeten?"/>
                     <CardActions>
                         <NumberDependency>
-                            <NumberField id="planet_rotation_h" defaultValue="23" hintText="Stunden" />
-                            <NumberField id="planet_rotation_m" defaultValue="56" hintText="Minuten" />
-                            <NumberField id="planet_rotation_s" defaultValue="4" hintText="Sekunden" />
-                            <NumberField id="planet_rotation_ms" defaultValue="100" hintText="Millisekunden"
-                                    transferLimit="1000" transferValue="1" transferId="planet_rotation_s" />
+                            <TextField foo="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
+                            <TextField foo="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
+                                       transferLimit="60" transferValue="1"  transferTarget="planet_rotation_h"/>
+                            <TextField foo="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
+                                       transferLimit="60" transferValue="1" transferTarget="planet_rotation_m"/>
+                            <TextField foo="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
+                                       transferLimit="1000" transferValue="1" transferTarget="planet_rotation_s"/>
                             <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
                             <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
                         </NumberDependency>
