@@ -24,15 +24,19 @@ export class NumberDependency extends React.Component{
     componentDidMount(){
     }
 
-    _valueLink(key, transferTargetKey) {
+    _valueLink(key) {
         return {
             value: this.state[key],
             requestChange: (newValue) => {
+                console.log('_valueLink => requestChange');
                 let newState = {};
                 newState[key] = newValue;
-                //newState[transferTargetKey] = 500;
                 this.setState(newState);
-                console.log('_valueLink => requestChange');
+                this._delay = 1500;
+                if (this._timeout){
+                    //console.log('clear timeout this._delay');
+                    clearTimeout(this._timeout);
+                }
             }
         }
     }
@@ -41,20 +45,20 @@ export class NumberDependency extends React.Component{
         console.log('componentWillUpdate', 'logic goes in here');
         React.Children.map(this.props.children, (child) => {
             let key = child.props.foo;
-            if (child.type.displayName === 'TextField' && this.state[key + '_value'] !== nextState[key + '_value']) {
-                console.log('will update ' + key)
-
-                let newState = {};
-                newState[child.props.transferTarget + '_value'] = 42;
-
-
-
-                this.setState(newState);
-
+            if (child.type.displayName === 'TextField'
+                    && child.props.transferTarget
+                    && this.state[key + '_value'] !== nextState[key + '_value']) {
+                console.log('will update from', key, 'to', child.props.transferTarget, this._delay);
+                this._timeout = setTimeout(() => {
+                    let newState = {};
+                    newState[child.props.transferTarget + '_value'] = 42;
+                    this.setState(newState);
+                }, this._delay );
+                this._delay = 2;
             }
         });
-
     }
+
     componentDidUpdate(prevProps, prevState){
         //console.log('componentDidUpdate', arguments);
     }
@@ -65,18 +69,11 @@ export class NumberDependency extends React.Component{
             {
                 React.Children.map(this.props.children, (child,  index) => {
                     if (child.type.displayName === 'TextField') {
-                        var clone = React.addons.cloneWithProps(child, {
+                        return React.addons.cloneWithProps(child, {
                             ref: child.props.foo,
                             key: 'text_field_' + index,
-                            valueLink: this._valueLink(child.props.foo + '_value',
-                                child.props.transferTarget + '_value'),
-                            //value: this.state[child.props.foo + '_value'],
-                            //onChange: this.handleChange.bind(this, child.props.foo, child.props.transferLimit, child.props.transferValue, child.props.transferTarget)
-                            //onUpdate: this.handleUpdate.bind(this, child.props.foo, child.props.transferLimit, child.props.transferValue, child.props.transferTarget)
-                            //onChange TODO
-                            //onUpdate TODO
-                        })
-                        return clone;
+                            valueLink: this._valueLink(child.props.foo + '_value')
+                        });
                     } else {
                         return child;
                     }
