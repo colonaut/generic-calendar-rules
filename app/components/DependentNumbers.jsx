@@ -10,51 +10,53 @@ export class NumberDependency extends React.Component{
         super(props);
     }
 
-
-    handleChange(key, transfer_limit, tranfser_value, transfer_target, event){
-        console.log('arguments', arguments);
-        let newState = {},
-            new_value = parseInt(event.target.value),
-            delay;
-
-
-        console.log('', new_value, transfer_limit)
-
-        if (transfer_limit < new_value){
-            let new_transfer_value = parseInt(new_value / transfer_limit);
-
-            console.log('new transfer value', new_transfer_value);
-            console.log('new value', new_value);
-
-
-
-            new_value = new_transfer_value * transfer_limit - new_value;
-            //newState[transfer_target + '_value'] = new_transfer_value;
-        }
-
-        newState[key + '_value'] = new_value;
-
-        delay = setTimeout(function(){clearTimeout(delay), this.setState(Object.assign({}, this.state, newState))}, 500)
-
-
-    }
-
-    handleUpdate(key){
-        //console.log('update:', key);
-    }
-
     componentWillMount(){
-        //set the initial state
+        //console.log(set the initial state)
         React.Children.map(this.props.children, (child) => {
             if (child.type.displayName === 'TextField') {
                 var newState = {};
-                newState['' + child.props.foo + '_value'] = child.props.defaultValue;
+                newState[child.props.foo + '_value'] = child.props.defaultValue;
                 this.setState(newState);
             }
         });
     }
 
     componentDidMount(){
+    }
+
+    _valueLink(key, transferTargetKey) {
+        return {
+            value: this.state[key],
+            requestChange: (newValue) => {
+                let newState = {};
+                newState[key] = newValue;
+                //newState[transferTargetKey] = 500;
+                this.setState(newState);
+                console.log('_valueLink => requestChange');
+            }
+        }
+    }
+
+    componentWillUpdate(nextProps, nextState){
+        console.log('componentWillUpdate', 'logic goes in here');
+        React.Children.map(this.props.children, (child) => {
+            let key = child.props.foo;
+            if (child.type.displayName === 'TextField' && this.state[key + '_value'] !== nextState[key + '_value']) {
+                console.log('will update ' + key)
+
+                let newState = {};
+                newState[child.props.transferTarget + '_value'] = 42;
+
+
+
+                this.setState(newState);
+
+            }
+        });
+
+    }
+    componentDidUpdate(prevProps, prevState){
+        //console.log('componentDidUpdate', arguments);
     }
 
     render(){
@@ -66,8 +68,10 @@ export class NumberDependency extends React.Component{
                         var clone = React.addons.cloneWithProps(child, {
                             ref: child.props.foo,
                             key: 'text_field_' + index,
-                            value: this.state[child.props.foo + '_value'],
-                            onChange: this.handleChange.bind(this, child.props.foo, child.props.transferLimit, child.props.transferValue, child.props.transferTarget)
+                            valueLink: this._valueLink(child.props.foo + '_value',
+                                child.props.transferTarget + '_value'),
+                            //value: this.state[child.props.foo + '_value'],
+                            //onChange: this.handleChange.bind(this, child.props.foo, child.props.transferLimit, child.props.transferValue, child.props.transferTarget)
                             //onUpdate: this.handleUpdate.bind(this, child.props.foo, child.props.transferLimit, child.props.transferValue, child.props.transferTarget)
                             //onChange TODO
                             //onUpdate TODO
