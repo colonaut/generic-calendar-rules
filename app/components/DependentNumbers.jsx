@@ -12,11 +12,11 @@ export class NumberDependency extends React.Component{
 
     componentWillMount(){
         //console.log(set the initial state)
-        React.Children.map(this.props.children, (child) => {
+        React.Children.forEach(this.props.children, (child, index) => {
             if (child.type.displayName === 'TextField') {
-                var newState = {};
-                newState[child.props.foo + '_value'] = child.props.defaultValue;
-                this.setState(newState);
+                this.setState({
+                    ['value_' + (() => index)()] : child.props.defaultValue
+                });
             }
         });
     }
@@ -29,9 +29,9 @@ export class NumberDependency extends React.Component{
             value: this.state[key],
             requestChange: (newValue) => {
                 console.log('_valueLink => requestChange');
-                let newState = {};
-                newState[key] = newValue;
-                this.setState(newState);
+                this.setState({
+                    [(() => key)()]: newValue
+                });
                 this._delay = 1500;
                 if (this._timeout){
                     //console.log('clear timeout this._delay');
@@ -43,18 +43,33 @@ export class NumberDependency extends React.Component{
 
     componentWillUpdate(nextProps, nextState){
         console.log('componentWillUpdate', 'logic goes in here');
-        React.Children.map(this.props.children, (child) => {
-            let key = child.props.foo;
+        React.Children.map(this.props.children, (child, index) => {
             if (child.type.displayName === 'TextField'
-                    && child.props.transferTarget
-                    && this.state[key + '_value'] !== nextState[key + '_value']) {
-                console.log('will update from', key, 'to', child.props.transferTarget, this._delay);
+                //&& this.state[child.key + '_value'] !== nextState[child.key + '_value']
+                && this.state['value_' + index] !== nextState['value_' + index])
+            {
+                console.log('will update from', index, '(', child.key, ') to', child.props.transferTargetIndex, ' in ', this._delay, 'ms');
                 this._timeout = setTimeout(() => {
-                    let newState = {};
-                    newState[child.props.transferTarget + '_value'] = 42;
+                    let newState = {
+                        ['is_update_' + (() => index)()]: true
+                    };
+                    if (child.props.transferTargetIndex) {
+                        newState['value_' + child.props.transferTargetIndex] = Math.floor(Math.random() * (100 - 1)) + 1;
+                    }
                     this.setState(newState);
+
+                    /*this.setState({
+                        ['value_' + (() => child.props.transferTargetIndex)()]: Math.floor(Math.random() * (100 - 1)) + 1,
+                        ['is_update_' + (() => index)()]: true
+                    });
+*/
+                    setTimeout(() => {
+                        console.log({[ 'is_update_' + (() => index)() ]: false});
+                        this.setState({[ 'is_update_' + (() => index)() ]: false})
+                    }, 1000);
+
                 }, this._delay );
-                this._delay = 2;
+                this._delay = 100;
             }
         });
     }
@@ -70,9 +85,9 @@ export class NumberDependency extends React.Component{
                 React.Children.map(this.props.children, (child,  index) => {
                     if (child.type.displayName === 'TextField') {
                         return React.addons.cloneWithProps(child, {
-                            ref: child.props.foo,
-                            key: 'text_field_' + index,
-                            valueLink: this._valueLink(child.props.foo + '_value')
+                            key: this.key || 'text_field_' + index,
+                            valueLink: this._valueLink('value_' + index),
+                            inputStyle: this.state['is_update_' + index] ? {color: '#00f', fontWeight: 'bold'} : {}
                         });
                     } else {
                         return child;

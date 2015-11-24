@@ -54,13 +54,19 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange dauert eine Umdrehung Deines Planeten?"/>
                     <CardActions>
                         <NumberDependency>
-                            <TextField foo="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
-                            <TextField foo="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
-                                       transferLimit="60" transferValue="1"  transferTarget="planet_rotation_h"/>
-                            <TextField foo="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
-                                       transferLimit="60" transferValue="1" transferTarget="planet_rotation_m"/>
-                            <TextField foo="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
-                                       transferLimit="1000" transferValue="1" transferTarget="planet_rotation_s"/>
+                            <TextField key="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
+                            <TextField key="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
+                                       transferLimit="60" transferValue="1"
+                                       transferTargetKey="planet_rotation_h"
+                                       transferTargetIndex="0"/>
+                            <TextField key="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
+                                       transferLimit="60" transferValue="1"
+                                       transferTargetKey="planet_rotation_m"
+                                       transferTargetIndex="1"/>
+                            <TextField key="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
+                                       transferLimit="1000" transferValue="1"
+                                       transferTargetKey="planet_rotation_s"
+                                       transferTargetIndex="2" />
                             <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
                             <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
                         </NumberDependency>
