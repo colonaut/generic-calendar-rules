@@ -28,7 +28,7 @@ export class NumberDependency extends React.Component{
         return {
             value: this.state[key],
             requestChange: (newValue) => {
-                console.log('_valueLink => requestChange');
+                //console.log('_valueLink => requestChange');
                 this.setState({
                     [(() => key)()]: newValue
                 });
@@ -49,33 +49,40 @@ export class NumberDependency extends React.Component{
                 && this.state['value_' + index] !== nextState['value_' + index])
             {
                 console.log('will update from', index, '(', child.key, ') to', child.props.transferTargetIndex, ' in ', this._delay, 'ms');
-                this._timeout = setTimeout(() => {
+
+              this._timeout = setTimeout(() => {
                     let newState = {
                         ['is_update_' + (() => index)()]: true
                     };
-                    if (child.props.transferTargetIndex) {
-                        newState['value_' + child.props.transferTargetIndex] = Math.floor(Math.random() * (100 - 1)) + 1;
+
+                    if (child.props.transferTargetIndex != undefined
+                            && parseInt(child.props.transferLimit) <= parseInt(nextState['value_' + index])
+                    ) {
+
+                        let transferValue = parseInt(nextState['value_' + index] / child.props.transferLimit);
+                        let keepValue = nextState['value_' + index] % child.props.transferLimit;
+                        //console.log('transferValue', transferValue, 'keepValue', keepValue);
+
+                        newState['value_' + child.props.transferTargetIndex] = transferValue;
+                        newState['value_' + index] = keepValue;
                     }
+
                     this.setState(newState);
 
-                    /*this.setState({
-                        ['value_' + (() => child.props.transferTargetIndex)()]: Math.floor(Math.random() * (100 - 1)) + 1,
-                        ['is_update_' + (() => index)()]: true
-                    });
-*/
+                    //the update state lasts for 1 second (changes color of input text)
                     setTimeout(() => {
-                        console.log({[ 'is_update_' + (() => index)() ]: false});
                         this.setState({[ 'is_update_' + (() => index)() ]: false})
                     }, 1000);
 
-                }, this._delay );
+                }, this._delay);
+
                 this._delay = 100;
             }
         });
     }
 
     componentDidUpdate(prevProps, prevState){
-        //console.log('componentDidUpdate', arguments);
+        //console.log('componentDidUpdate', arguments, this._timeout);
     }
 
     render(){
@@ -94,8 +101,6 @@ export class NumberDependency extends React.Component{
                     }
                 })
             }
-
-
         </div>);
     }
 }

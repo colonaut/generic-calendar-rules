@@ -56,15 +56,15 @@ export class App extends React.Component{
                         <NumberDependency>
                             <TextField key="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
                             <TextField key="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
-                                       transferLimit="60" transferValue="1"
+                                       transferLimit="60"
                                        transferTargetKey="planet_rotation_h"
                                        transferTargetIndex="0"/>
                             <TextField key="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
-                                       transferLimit="60" transferValue="1"
+                                       transferLimit="60"
                                        transferTargetKey="planet_rotation_m"
                                        transferTargetIndex="1"/>
                             <TextField key="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
-                                       transferLimit="1000" transferValue="1"
+                                       transferLimit="1000"
                                        transferTargetKey="planet_rotation_s"
                                        transferTargetIndex="2" />
                             <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
