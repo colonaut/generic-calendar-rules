@@ -6,6 +6,8 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import { Card, CardHeader, Avatar, CardActions, CardMedia, CardTitle, FlatButton, CardText } from 'material-ui/lib/card';
 import TextField from 'material-ui/lib/text-field';
 
+import { FileUpload } from './components/FileUpload.jsx';
+
 import mui from 'material-ui';
 let ThemeManager = new mui.Styles.ThemeManager();
 //console.log('ThemeManager:', ThemeManager);
@@ -29,7 +31,22 @@ export class App extends React.Component{
 
     render() {
         return (<Carousel>
+
             <CarouselSlide>
+
+                <div>
+                    <p>I wil be file upload</p>
+
+                    <FileUpload>
+
+                    </FileUpload>
+
+                </div>
+
+            </CarouselSlide>
+
+            <CarouselSlide>
+
                 <Card>
 
                     <CardTitle title="Lass uns Deinen Planeten genauer ansehen." />
@@ -41,11 +58,14 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange braucht eine Rotation Deines Planeten?" />
                     <CardActions>
                         <NumberDependency>
-                            <TextField ref="lev1-0" hintText="level 1 0"/>
+                            <TextField key="lev1-0" hintText="level 1 0"/>
                             <NumberDependency>
-                                <TextField ref="lev2-0" hintText="level 2 1"/>
+                                <TextField key="lev2-0" hintText="level 2 1"/>
                             </NumberDependency>
-                            <TextField ref="lev1-1" hintText="level 1 1"/>
+                            <TextField key="lev1-1" hintText="level 1 1"/>
+                            <div>
+                                <TextField key="lev1-2" hintText="level 1 2"/>
+                            </div>
                         </NumberDependency>
 
                     </CardActions>
@@ -54,19 +74,27 @@ export class App extends React.Component{
                     <CardTitle subtitle="Wie lange dauert eine Umdrehung Deines Planeten?"/>
                     <CardActions>
                         <NumberDependency>
-                            <TextField key="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
-                            <TextField key="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
+                            <div style={{backgroundColor: 'yellow'}}>
+                                <TextField key="planet_rotation_h" defaultValue="23" floatingLabelText="Stunden" />
+                            </div>
+                            <div style={{backgroundColor: 'green'}}>
+                                <TextField key="planet_rotation_m" defaultValue="56" floatingLabelText="Minuten"
                                        transferLimit="60"
                                        transferTargetKey="planet_rotation_h"
                                        transferTargetIndex="0"/>
-                            <TextField key="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
+                            </div>
+                            <div style={{backgroundColor: 'red'}}>
+                                <TextField key="planet_rotation_s" defaultValue="4" floatingLabelText="Sekunden"
                                        transferLimit="60"
                                        transferTargetKey="planet_rotation_m"
                                        transferTargetIndex="1"/>
-                            <TextField key="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
+                            </div>
+                            <div style={{backgroundColor: 'blue'}}>
+                                <TextField key="planet_rotation_ms" defaultValue="100" floatingLabelText="Millisekunden"
                                        transferLimit="1000"
                                        transferTargetKey="planet_rotation_s"
                                        transferTargetIndex="2" />
+                            </div>
                             <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
                             <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
                         </NumberDependency>
@@ -76,20 +104,11 @@ export class App extends React.Component{
                     </CardActions>
 
 
-                    <div>
-                        <input type="text" id="planet_rotation_h" value="23" /> h
-                        <input type="text" id="planet_rotation_m" value="56" /> m
-                        <input type="text" id="planet_rotation_s" value="4" /> s
-                        <input type="text" id="planet_rotation_ms" value="100" /> ms
-                        <p className="earth-default">Erdumdrehung: 23h, 56m, 4s, 100ms</p>
-                        <p>Das ist die Zeit die ein ganzer Tag bei Deinem Planeten dauert.</p>
-
-                    </div>
 
 
                     <div>
                         <label for="planet_diameter">Wie groß ist sein Radius?</label>
-                        <input type="text" id="planet_diameter" value="6370" /> km
+                        <input type="text" key="planet_diameter" value="6370" /> km
                         <p className="earth-default">Erdradius: 6370 km</p>
                     </div>
 

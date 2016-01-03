@@ -6,17 +6,16 @@ class CarouselDots extends React.Component{
         super(props);
     }
 
-    handleClick(slide, slideIndex){
-        this.props.handleDotClick(slide, slideIndex);
+    handleClick(slide_index){
+        this.props.handleSlideSelection(slide_index);
     }
 
     render(){
-        var self = this;
         return(<ul style={{margin: 0, padding: 0, listStyleType: 'none', textAlign: 'center'}}>
-            {this.props.slides.map((slide, ix) => {
+            {this.props.slides.map((slide, slide_index) => {
                 return(<li style={{display: 'inline', marginLeft: '0.5em', marginRight: '0.5em'}}>
-                    <button onClick={self.handleClick.bind(self, slide, ix)}>
-                        {ix}
+                    <button onClick={this.handleClick.bind(this, slide_index)}>
+                        {slide_index + 1}
                     </button>
                 </li>);
             })}
@@ -24,38 +23,56 @@ class CarouselDots extends React.Component{
     }
 }
 
+
 class CarouselPrevious extends React.Component{
     constructor() {
         super();
     }
 
+    handleClick(){
+        let slide_index = this.props.current_index - 1;
+        if (slide_index < 0)
+            slide_index = this.props.slides.length - 1;
+
+        this.props.handleSlideSelection(slide_index);
+    }
+
     render(){
-        return(<button style={{height:'100%', width: '10%', border: '0px none', backgroundColor: 'transparent'}}>
-            Previous
+        return(<button style={{height:'100%'}}
+                       onClick={this.handleClick.bind(this)}>
+            &lt;&lt;
         </button>);
     }
 }
+
 
 class CarouselNext extends React.Component{
     constructor() {
         super();
     }
 
+    handleClick(){
+        let slide_index = this.props.current_index + 1;
+        if (slide_index >= this.props.slides.length)
+            slide_index = 0;
+
+        this.props.handleSlideSelection(slide_index);
+    }
+
     render(){
-        return(<button style={{height:'100%', width: '10%'}}>
-            Next
+        return(<button style={{height:'100%'}}
+                       onClick={this.handleClick.bind(this)}>
+            &gt;&gt;
         </button>);
     }
 }
+
 
 //this will be our state holder
 export class Carousel extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
-            message: 'constructor state',
-            slides: [],
-        }; //with es6 this redundifies getInitialState!
+
     }
 
     componentWillMount(){
@@ -71,43 +88,39 @@ export class Carousel extends React.Component{
         this.setState({
             message: 'component will mount',
             slides: list,
-            currentSlide: list[0]
+            currentIndex: 0
         });
 
     }
 
-    handleDotClick(slide, slideIndex, event){
-
-        console.log(slide, 'Carousel handleDotClick');
-        console.log(slideIndex, 'Carousel handleDotClick');
-        console.log(event, 'Carousel handleDotClick');
-        console.log('Carousel handleDotClick', arguments);
+    handleSlideSelection(slide_index, event){
 
         this.setState({
             message: 'handleDotClick',
-            currentSlide: slide
+            currentIndex: slide_index
         });
     }
 
     render() {
-        return(<div style={{display: 'table'}}>
+        return(<div style={{display: 'table', width: '100%'}}>
             <div style={{display: 'table-row'}}>
-                <div style={{display: 'table-cell', width: '50%', textAlign: 'right'}}>
-                    <CarouselPrevious/>
+                <div style={{display: 'table-cell', width: '10%', textAlign: 'right'}}>
+                    <CarouselPrevious handleSlideSelection={this.handleSlideSelection.bind(this)} slides={this.state.slides} current_index={this.state.currentIndex}/>
                 </div>
-                <div style={{display: 'table-cell', verticalAlign: 'middle'}}>
-                    {this.state.currentSlide}
+                <div style={{display: 'table-cell', verticalAlign: 'middle', width: '80%'}}>
+                    {this.state.slides[this.state.currentIndex]}
                 </div>
-                <div style={{display: 'table-cell', width: '50%'}}>
-                    <CarouselNext/>
+                <div style={{display: 'table-cell', width: '10%'}}>
+                    <CarouselNext handleSlideSelection={this.handleSlideSelection.bind(this)} slides={this.state.slides} current_index={this.state.currentIndex}/>
                 </div>
             </div>
+
             <div style={{display: 'table-row'}}>
-                <div style={{display: 'table-cell', width: '50%'}}/>
+                <div style={{display: 'table-cell'}}/>
                 <div style={{display: 'table-cell'}}>
-                    <CarouselDots handleDotClick={this.handleDotClick.bind(this)} slides={this.state.slides}/>
+                    <CarouselDots handleSlideSelection={this.handleSlideSelection.bind(this)} slides={this.state.slides}/>
                 </div>
-                <div style={{display: 'table-cell', width: '50%'}}/>
+                <div style={{display: 'table-cell'}}/>
             </div>
         </div>);
     }

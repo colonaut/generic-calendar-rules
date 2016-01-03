@@ -12,23 +12,24 @@ export class NumberDependency extends React.Component{
 
     componentWillMount(){
         //console.log(set the initial state)
-        React.Children.forEach(this.props.children, (child, index) => {
+        /*React.Children.forEach(this.props.children, (child, index) => {
             if (child.type.displayName === 'TextField') {
                 this.setState({
                     ['value_' + (() => index)()] : child.props.defaultValue
                 });
             }
-        });
+        });*/
+        this._recursiveBuildState(this.props.children);
     }
 
     componentDidMount(){
     }
 
-    _valueLink(key) {
+    _linkState(key) {
         return {
             value: this.state[key],
             requestChange: (newValue) => {
-                //console.log('_valueLink => requestChange');
+                console.log('_linkState => requestChange, key:', key);
                 this.setState({
                     [(() => key)()]: newValue
                 });
@@ -43,7 +44,7 @@ export class NumberDependency extends React.Component{
 
     componentWillUpdate(nextProps, nextState){
         console.log('componentWillUpdate', 'logic goes in here');
-        React.Children.map(this.props.children, (child, index) => {
+        /*React.Children.map(this.props.children, (child, index) => {
             if (child.type.displayName === 'TextField'
                 //&& this.state[child.key + '_value'] !== nextState[child.key + '_value']
                 && this.state['value_' + index] !== nextState['value_' + index])
@@ -78,16 +79,57 @@ export class NumberDependency extends React.Component{
 
                 this._delay = 100;
             }
-        });
+        });*/
     }
 
     componentDidUpdate(prevProps, prevState){
         //console.log('componentDidUpdate', arguments, this._timeout);
     }
 
+    _recursiveBuildState(children){
+        React.Children.forEach(children, (child) => {
+            if (child.type && child.type.displayName === 'TextField') {
+                //console.log('recursiveBuildState state key:', ['value_' + (() => child.key)()]);
+                this.setState({
+                    ['value_' + (() => child.key)()] : child.props.defaultValue
+                });
+            } else if (React.isValidElement && child.props && child.type)
+                this._recursiveBuildState(child.props.children);
+        });
+    }
+
+    _recursiveCloneChildren(children){
+        //console.log('this in clone', this);
+
+        return React.Children.map(children, (child) => {
+            if (child.type && child.type.displayName === 'TextField') {
+
+               return React.addons.cloneWithProps(child, {
+                    key: child.key,
+                    valueLink: this._linkState('value_' + child.key),
+                    inputStyle: this.state['is_update_' + child.key] ? {color: '#00f', fontWeight: 'bold'} : {}
+                });
+            } else {
+                if (!React.isValidElement || !child.props)
+                    return child;
+                this._recursiveCloneChildren(child.props.children);
+                return React.addons.cloneWithProps(child);
+
+            }
+        });
+
+    }
+
     render(){
+        //console.log('state in render', this.state);
         return(<div>
-            I am the dependency container
+
+            <div style={{border: '1px solid #f0f'}}>
+                 {this._recursiveCloneChildren(this.props.children)}
+            </div>
+
+            {/*
+            <p>I am the dependency container</p>
             {
                 React.Children.map(this.props.children, (child,  index) => {
                     if (child.type.displayName === 'TextField') {
@@ -100,7 +142,7 @@ export class NumberDependency extends React.Component{
                         return child;
                     }
                 })
-            }
+            }*/}
         </div>);
     }
 }
