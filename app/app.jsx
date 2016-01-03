@@ -36,7 +36,7 @@ export class App extends React.Component{
 
         return setTimeout(() => {
            callback('timeout upload simulation done for ' + file.name);
-        }, 3000);
+        }, this._fileUploadTimer);
 
     }
 
