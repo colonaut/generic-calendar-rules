@@ -29,8 +29,15 @@ export class App extends React.Component{
         };
     }
 
-    handleFileUploadDrop(event, file, content){
-        console.log(event, file, content);
+    handleFileUploadDrop(event, file, content, callback){
+        //console.log(event, file, content, callback);
+        this._fileUploadTimer = this._fileUploadTimer || 0;
+        this._fileUploadTimer = this._fileUploadTimer + 1000;
+
+        return setTimeout(() => {
+           callback('timeout upload simulation done for ' + file.name);
+        }, 3000);
+
     }
 
     render() {
@@ -38,8 +45,7 @@ export class App extends React.Component{
 
             <CarouselSlide>
 
-                <FileUpload onDrop={this.handleFileUploadDrop.bind(this)} dropMessage="Dropped!"
-                    dragOverStyle={{border:'5px dashed #0f0'}}/>
+                <FileUpload onDrop={this.handleFileUploadDrop.bind(this)} dropMessage="Dropped!"/>
 
             </CarouselSlide>
 
