@@ -29,19 +29,17 @@ export class App extends React.Component{
         };
     }
 
+    handleFileUploadDrop(event, file, content){
+        console.log(event, file, content);
+    }
+
     render() {
         return (<Carousel>
 
             <CarouselSlide>
 
-                <div>
-                    <p>I wil be file upload</p>
-
-                    <FileUpload>
-
-                    </FileUpload>
-
-                </div>
+                <FileUpload onDrop={this.handleFileUploadDrop.bind(this)} dropMessage="Dropped!"
+                    dragOverStyle={{border:'5px dashed #0f0'}}/>
 
             </CarouselSlide>
 
