@@ -29,16 +29,21 @@ export class App extends React.Component{
         };
     }
 
-    handleFileUploadDrop(event, file, content, callback){
+
+    handleFileUploadDrop(file, content, callback_file_loaded, callback_file_processed){
         //console.log(event, file, content, callback);
+
+        callback_file_loaded('loaded, start processing ' + file.name);
+
         this._fileUploadTimer = this._fileUploadTimer || 0;
         this._fileUploadTimer = this._fileUploadTimer + 1000;
 
-        return setTimeout(() => {
-           callback('timeout upload simulation done for ' + file.name);
+        setTimeout(() => {
+            callback_file_processed('setTimeout upload simulation done for ' + file.name);
         }, this._fileUploadTimer);
 
     }
+
 
     render() {
         return (<Carousel>
